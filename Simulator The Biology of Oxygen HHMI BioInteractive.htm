@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="robots" content="nofollow,noindex" />
+	<link href="images/homescreen.png" rel="apple-touch-icon" />
+	<link href="images/homescreen.png" rel="apple-touch-icon-precomposed" />
+	<title>Simulator: The Biology of Oxygen: HHMI BioInteractive</title>
+	<link href='videos/video-js/video-js.css' rel='stylesheet'>
+	<script src='videos/video-js/video.min.js'>
+	</script>
+	<script src="https://player.vimeo.com/api/player.js">
+	</script>
+<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/custom.css" rel="stylesheet" type="text/css">
+	<link href="css/open-iconic-bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-icons.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<!--link href="css/sidebars.css" rel="stylesheet"-->
+	<link href="css/bootstrap-slider.css" rel="stylesheet">
+<!-- jQuery -->
+	<script src="js/jquery-3.5.1.min.js">
+	</script>
+<!-- A3MG Cookie Scripts-->
+	<script src="js/a3mg.js">
+	</script>
+<!--script src="js/jquery.scrollTo.min.js">
+	</script-->
+	<script src="js/bootstrap-slider.js">
+	</script>
+	<script src="js/sidebar.js">
+	</script>
+</head>
+<!--body class="d-flex flex-column h-100" onresize="myResizeFunction()"-->
+<body class="d-flex flex-column h-100">
+<!-- Google Tag Manager -->
+<noscript>
+	<iframe src="//www.googletagmanager.com/ns.html?id=GTM-W69ZD3" height="0" width="0" style="display:none;visibility:hidden"></iframe> 
+</noscript>
+<script>
+	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-W69ZD3');
+</script>
+<!-- End Google Tag Manager -->
+<script type="text/javascript">
+	// FOR VIDEOS TO USE WITH GOOGLE TAG MANAGER
+	var g_category = "Click and Learn"
+	var g_action = "BioOxygen"
+	//var g_myVideo = "myVideo" // video_trackevents_ad.js uses this variable
+	//var g_myAD = "3p-plugin-target-5370114-z6alkacs" // video_trackevents_ad.js uses this variable
+</script>
+<script src="js/highcharts/highcharts.js">
+</script>
+<script src="js/highcharts/modules/bullet.js">
+</script>
+<script src="js/highcharts/modules/series-label.js">
+</script>
+<!--script src="js/highcharts/modules/solid-gauge.js">
+</script-->
+<script src="js/highcharts/modules/exporting.js">
+</script>
+<script src="js/highcharts/modules/export-data.js">
+</script>
+<script src="js/highcharts/modules/accessibility.js">
+</script>
+<script src="js/highcharts/themes/high-contrast-light.js">
+</script>
+<a tabindex="0" class="dark-links visually-hidden-focusable" href="#maincontent">Skip to main content</a> 
+<nav role="navigation" class="navbar navbar-expand-md navbar-dark">
+	<a class="navbar-brand h-100" href="home.html">The Biology of Oxygen</a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto w-100 nav-justified">
+			<li class="nav-item"><a class="nav-link" href="atmosphere.html">Oxygen in the Atmosphere</a></li>
+			<li class="nav-item"><a class="nav-link" href="body.html">Oxygen in the Body</a></li>
+			<li class="nav-item active"><a class="nav-link" href="#" aria-current="page">Oxygen Circulation Simulator</a></li>
+		</ul>
+	</div>
+</nav>
+<main role="main" id="maincontent"> 
+<div class="d-flex" id="wrapper">
+	<h1 class="visually-hidden">
+		Oxygen Circulation Simulator
+	</h1>
+<!--div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width: 300px; box-shadow: 0 0 9px -2px rgba(0,0,0,0.8);"-->
+	<div id="sidebar-wrapper" class="d-flex flex-column" style="min-width: 300px; width: 300px; box-shadow: 0 0 9px -2px rgba(0,0,0,0.8);">
+		<div class="bg-sidebar-header px-4 pt-3 pb-1">
+<!--button type="button" class="btn-close text-reset float-end" data-bs-dismiss="offcanvas" aria-label="Close"></button-->
+<!--button id="sidebarToggle" type="button" class="btn-close text-reset float-end" aria-label="Close"></button-->
+			<h2 class="sidebar">
+				Simulator Settings <span><button type="button" id="resetSimulation" class="btn btn-sm btn-link p-0 float-end" onclick="alertResetSimulation();" aria-label="Reset Simulator Parameters">Reset</button></span> 
+			</h2>
+			<p class="text-micro">
+				The default parameters are set based on a ??? adult. Click on the parameter name to learn more. 
+			</p>
+		</div>
+					<div style="height: 0px;">
+				
+				
+				<button id="sidebarToggle" title="Toggle Simulator Settings" type="button" class="btn slider-toggle" onclick="mySidebarToggle()" aria-label="Toggle Simulator Settings">
+					<span id="sidebarToggleClose" class="bi-arrow-bar-left" aria-hidden="true"> </span>
+					<span id="sidebarToggleOpen" class="d-none bi-arrow-bar-right" aria-hidden="true"></span>
+				</button>
+			</div>
+		<div class="px-4" id="parameters">
+<!--Parameter Container DIV-->
+<!--Altitude-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="altitude-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Altitude is (definition goes here).">Altitude</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Altitude</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						meters (change unit) 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider1Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider1()" value="0" pattern="[0-9]*" aria-labelledby="altitude-label" />
+				</div>
+			</div>
+			<div aria-label="altitude slider" aria-describedby="altitude-desc">
+				<p id="altitude-desc" class="d-none">
+					Range 0 to 10,000 meters, Normal range 
+				</p>
+				<input id="slider1" type="text" data-slider-id="altitude" data-slider-min="0" data-slider-max="10000" data-slider-step="10" data-slider-value="0" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,10000]" data-slider-ticks-labels='["0", "10,000"]' data-slider-rangehighlights='[{ "start": 0, "end": 10000, "class": "range1" },]' />
+			</div>
+<!--END Altitude-->
+<!--Metabolic-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="metabolic-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Metabolic demand for O2 is (definition goes here).">Metabolic demand for O2</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Metabolic demand for O2</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						milliliter/minute 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider2Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider2()" value="250" pattern="[0-9]*" aria-labelledby="metabolic-label" />
+				</div>
+			</div>
+			<div aria-label="metabolic demand of O 2 slider" aria-describedby="metabolic-desc">
+				<p id="metabolic-desc" class="d-none">
+					Full Range: 100 to 800 milliliters/minute; Normal Range: 250 to 400 milliliters/minute 
+				</p>
+				<input id="slider2" type="text" data-slider-id="metabolic" data-slider-min="100" data-slider-max="550" data-slider-step="10" data-slider-value="250" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[100,250,400,550]" data-slider-ticks-labels='["Low","250","400","High"]' data-slider-rangehighlights='[{ "start": 250, "end": 400, "class": "range1" },]' />
+			</div>
+<!--END Metabolic-->
+<!--Respiratory-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="respiratory-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Respiratory rate is (definition goes here).">Respiratory rate</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Respiratory rate</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						breaths/minute 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider3Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider3()" value="12" pattern="[0-9]*" aria-labelledby="respiratory-label" />
+				</div>
+			</div>
+			<div aria-label="respiratory rate" aria-describedby="respiratory-desc">
+				<p id="respiratory-desc" class="d-none">
+					Full Range: 1 to 30 breaths/minute; Normal Range: 10 to 20 breaths/minute 
+				</p>
+				<input id="slider3" type="text" data-slider-id="respiratory" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="12" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,10,20,30]" data-slider-ticks-labels='["Low","10","20","High"]' data-slider-rangehighlights='[{ "start": 10, "end": 20, "class": "range1" },]' />
+			</div>
+<!--END Respiratory-->
+<!--Tidal Volume-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="tidalvolume-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Tidal volume is (definition goes here).">Tidal volume</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Tidal volume</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						milliliter 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider4Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider4()" value="475" pattern="[0-9]*" aria-labelledby="tidalvolume-label" />
+				</div>
+			</div>
+			<div aria-label="tidal volume" aria-describedby="tidalvolume-desc">
+				<p id="tidalvolume-desc" class="d-none">
+					Full Range: 200 to 800 milliliters; Normal Range: 400 to 600 milliliters 
+				</p>
+				<input id="slider4" type="text" data-slider-id="tidalvolume" data-slider-min="200" data-slider-max="800" data-slider-step="5" data-slider-value="475" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[200,400,600,800]" data-slider-ticks-labels='["Low","400","600","High"]' data-slider-rangehighlights='[{ "start": 450, "end": 550, "class": "range1" },]' />
+			</div>
+<!--END Tidal Volume-->
+<!--Cardiac Output-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="cardiacoutput-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Cardiac output is (definition goes here).">Cardiac output</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Cardiac output</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						liter/minute 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider5Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider5()" value="6.5" pattern="[0-9]*" aria-labelledby="cardiacoutput-label" />
+				</div>
+			</div>
+			<div aria-label="cardiac output" aria-describedby="cardiacoutput-desc">
+				<p id="cardiacoutput-desc" class="d-none">
+					Full Range: 2 to 10 liter/minute; Normal Range: 4 to 8 liter/minute 
+				</p>
+				<input id="slider5" type="text" data-slider-id="cardiacoutput" data-slider-min="2" data-slider-max="10" data-slider-step="0.5" data-slider-value="6.5" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[2,4,6,8,10]" data-slider-ticks-labels='["Low","4","6","8","High"]' data-slider-rangehighlights='[{ "start": 4, "end": 8, "class": "range1" },]' />
+			</div>
+<!--END Cardiac Output-->
+<!--Hemoglobin-->
+			<div class="d-flex pt-2 align-items-center">
+				<div>
+					<h3 class="sidebar mb-1">
+						<a class="dark-links cursor-help" id="hemoglobin-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Hemoglobin is (definition goes here).">Hemoglobin</a> 
+					</h3>
+					<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+					Additional Information: <dfn>Hemoglobin</dfn> is (definition goes here). </span> 
+					<div class="text-units fw-bold text-secondary">
+						grams/deciliter 
+					</div>
+				</div>
+				<div class="ms-auto w-25">
+					<input type="number" id="Slider6Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider6()" value="15" pattern="[0-9]*" aria-labelledby="hemoglobin-label" />
+				</div>
+			</div>
+			<div aria-label="cardiac output" aria-describedby="hemoglobin-desc">
+				<p id="hemoglobin-desc" class="d-none">
+					Full Range: 5 to 25 grams/deciliter; Normal Range: 12 to 18 grams/deciliter 
+				</p>
+				<input id="slider6" type="text" data-slider-id="hemoglobin" data-slider-min="0" data-slider-max="30" data-slider-step=".5" data-slider-value="15" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,10,20,30]" data-slider-ticks-labels='["Low","10","20","High"]' data-slider-rangehighlights='[{ "start": 12, "end": 18, "class": "range1" },]' />
+			</div>
+<!--END Hemoglobin-->
+		</div>
+		<div class="px-0" id="advancedparameters">
+			<div class="accordion accordion-flush" id="accordionFlushExample">
+				<div class="accordion-item">
+					<h3 class="accordion-header" id="flush-headingOne">
+						<button class="accordion-button collapsed px-4 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"> Advanced Parameters </button> 
+					</h3>
+					<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+						<div class="px-4">
+<!--Inspired Oxygen-->
+							<div class="d-flex pt-2 align-items-center">
+								<div>
+									<h3 class="sidebar mb-1">
+										<a class="dark-links cursor-help" id="inspiredoxygen-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Inspired oxygen is (definition goes here).">Inspired oxygen</a> 
+									</h3>
+									<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+									Additional Information: <dfn>Inspired oxygen</dfn> is (definition goes here). </span> 
+									<div class="text-units fw-bold text-secondary">
+										% 
+									</div>
+								</div>
+								<div class="ms-auto w-25">
+									<input type="number" id="Slider7Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider7()" value="21" pattern="[0-9]*" aria-labelledby="inspiredoxygen-label" />
+								</div>
+							</div>
+							<div aria-label="cardiac output" aria-describedby="inspiredoxygen-desc">
+								<p id="inspiredoxygen-desc" class="d-none">
+									Full Range: 0 to 100 %; Concentration of oxygen at room air is 21% 
+								</p>
+								<input id="slider7" type="text" data-slider-id="inspiredoxygen" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="21" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,25,50,75,100]" data-slider-ticks-labels='["0","25","50","75","100"]' data-slider-rangehighlights='[{ "start": 20, "end": 22, "class": "range1" },]' />
+							</div>
+<!--END Inspired Oxygen-->
+<!--Respiratory Quotient-->
+							<div class="d-flex pt-2 align-items-center">
+								<div>
+									<h3 class="sidebar mb-1">
+										<a class="dark-links cursor-help" id="respiratoryquotient-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Respiratory quotient is (definition goes here).">Respiratory quotient</a> 
+									</h3>
+									<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+									Additional Information: <dfn>Respiratory quotient</dfn> is (definition goes here). </span> 
+									<div class="text-units fw-bold text-secondary">
+										fraction 
+									</div>
+								</div>
+								<div class="ms-auto w-25">
+									<input type="number" id="Slider8Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider8()" value="0.8" pattern="[0-9]*" aria-labelledby="respiratoryquotient-label" />
+								</div>
+							</div>
+							<div aria-label="cardiac output" aria-describedby="respiratoryquotient-desc">
+								<p id="respiratoryquotient-desc" class="d-none">
+									Full Range: 0 to 2.1 fraction; Normal Range: 0.7 to 1.2 fraction 
+								</p>
+								<input id="slider8" type="text" data-slider-id="respiratoryquotient" data-slider-min="0" data-slider-max="2.1" data-slider-step="0.1" data-slider-value="0.8" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,7,14,21]" data-slider-ticks-labels='["0",".7","1.4","2.1"]' data-slider-rangehighlights='[{ "start": 0.7, "end": 1.2, "class": "range1" },]' />
+							</div>
+<!--END Respiratory Quotient-->
+<!--Body Temperature-->
+							<div class="d-flex pt-2 align-items-center">
+								<div>
+									<h3 class="sidebar mb-1">
+										<a class="dark-links cursor-help" id="bodytemperature-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Body temperature is (definition goes here).">Body temperature</a> 
+									</h3>
+									<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+									Additional Information: <dfn>Body temperature</dfn> is (definition goes here). </span> 
+									<div class="text-units fw-bold text-secondary">
+										Celcius (&#176;C) 
+									</div>
+								</div>
+								<div class="ms-auto w-25">
+									<input type="number" id="Slider9Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider9()" value="36.5" pattern="[0-9]*" aria-labelledby="bodytemperature-label" />
+								</div>
+							</div>
+							<div aria-label="cardiac output" aria-describedby="bodytemperature-desc">
+								<p id="bodytemperature-desc" class="d-none">
+									Full Range: 34 to 40 Celcius (&#176;C); Normal Range: 36.1 to 37.2 Celcius (&#176;C) 
+								</p>
+								<input id="slider9" type="text" data-slider-id="bodytemperature" data-slider-min="34" data-slider-max="40" data-slider-step=".1" data-slider-value="36.5" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[34,36,38,40]" data-slider-ticks-labels='["34","36","38","40"]' data-slider-rangehighlights='[{ "start": 36.1, "end": 37.2, "class": "range1" },]' />
+							</div>
+<!--END Body Temperature-->
+<!--Hematocrit-->
+							<div class="d-flex pt-2 align-items-center">
+								<div>
+									<h3 class="sidebar mb-1">
+										<a class="dark-links cursor-help" id="hematocrit-label" href="#scroll-target" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Hematocrit is (definition goes here).">Hematocrit</a> 
+									</h3>
+									<span class="visually-hidden"> 
+<!--Tooltip alternative for screen readers-->
+									Additional Information: <dfn>Hematocrit</dfn> is (definition goes here). </span> 
+									<div class="text-units fw-bold text-secondary">
+										fraction 
+									</div>
+								</div>
+								<div class="ms-auto w-25">
+									<input type="number" id="Slider10Val" class="form-control form-control-sm" onclick="this.select();" onblur="change_slider10()" value=".45" pattern="[0-9]*" aria-labelledby="hematocrit-label" />
+								</div>
+							</div>
+							<div aria-label="cardiac output" aria-describedby="hematocrit-desc">
+								<p id="hematocrit-desc" class="d-none">
+									Full Range: 0 to 1 fraction; Normal Range: .355 to .486 fraction 
+								</p>
+								<input id="slider10" type="text" data-slider-id="hematocrit" data-slider-min="0" data-slider-max="1" data-slider-step=".01" data-slider-value=".45" data-slider-tooltip="hide" data-slider-handle="square" data-slider-ticks="[0,4,6,10]" data-slider-ticks-labels='["0",".40",".60","1.0"]' data-slider-rangehighlights='[{ "start": .35, "end": .50, "class": "range1" },]' />
+							</div>
+<!--END Hematocrit-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex p-4">				
+				<button id="calculate" class="btn btn-explore w-100 mx-auto fw-normal" onclick="submitForm();" type="button">Calculate</button>			
+			</div>
+			
+			<div id="calculationComplete_notification" class="visually-hidden" aria-hidden="true" role="alert" aria-live="assertive" tabindex="-1">
+			</div>
+			
+			
+			<!--
+			<div class="d-flex p-4">		
+				<button class="btn btn-secondary w-100" type="button" id="calculate_feedback" disabled>
+				  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+				  Calculating...
+				</button>				
+			</div>
+			-->
+			
+<!--	
+	<div class="d-flex pt-2 align-items-center">
+		<li><label>RR</label></li>
+		<input name="RR" id="RR" onkeyup="changed(event, 'RR')" value="12"
+			class="text_input" type="text"  pattern="[0-9]*"  tabindex="2" size=6 style="overflow:hidden"></input>
+			breaths/min
+	</div>
+
+	<div class="d-flex pt-2 align-items-center">
+		<li><label>VT:</label></li>
+                <input name="VT" id="VT" onkeyup="changed(event, 'VT')" value="475"
+                    class="text_input"  type="text"  pattern="[0-9]*" tabindex="3" size=6 style="overflow:hidden"></input>
+                <SELECT id="dropdown" name="VT_unit" class="dropdown_menu" tabindex="200" >
+                    <option value='ml'>ml</option>
+                    <option value='l'>l</option>
+                </SELECT>
+	</div>
+
+-->
+		</div>
+	</div>
+	<div id="page-content-wrapper" class="container-fluid" style="min-width:320px;">
+		<div class="row">
+
+			<div class="col-12 col-lg-6 p-0 m-0">
+				<h2 class="visually-hidden"> Simulator Outputs </h2>
+				<img src="images/simulator-illustration.png" aria-describedby="illustration-desc" class="img-fluid d-none d-lg-block" alt="Short description"> <img src="images/simulator-illustration-stacked.png" aria-describedby="illustration-desc" class="img-fluid d-lg-none" alt="Short description"> 
+				<p id="illustration-desc" class="d-none">
+					Additional description 
+				</p>
+				
+
+		<div class="row d-flex px-3 pb-3">
+		<h3 class="col-12 mx-auto pt-0 text-center">
+			Oxygen Saturation 
+		</h3>
+
+		<div class="col-2 d-flex align-items-center justify-content-end"><p class="small my-0">Low</p></div>
+		<div class="col-8 px-0 rounded-pill fw-bold border border-2 border-dark">
+		<!--div class="d-flex justify-content-between" style="margin-left: calc(0% - 0px);"--> <!--Flush left-->
+		<div id="oxygensaturationpill" class="d-flex justify-content-between" style="margin-left: calc(97.5% - 70px);"> <!--Center-->
+		<!--div class="d-flex justify-content-between" style="margin-left: calc(100% - 70px);"--> <!--Flush right-->
+		<div class="rounded-pill bg-danger text-white text-center fw-bold" style="width: 70px;" id="oxygensaturationpercent">97.5%</div>
+		</div>
+        </div>
+		<div class="col-2 d-flex align-items-center"><p class="small my-0">Good</p></div>
+		</div>
+		</div>
+
+
+			<div class="col-12 col-lg-6 p-0 m-0 ps-3 ps-lg-0">
+			<h3 class="visually-hidden">Graph of Oxygen Flow</h3>
+				<figure class="highcharts-figure">
+					<div id="container1">
+					</div>
+					<div id="container2">
+					</div>
+					<div id="container3">
+					</div>
+					<div id="container4">
+					</div>
+					<div id="container5">
+					</div>
+					<p class="small mt-1 mb-0 me-3 highcharts-description">
+						Graph of current settings. Defaults indicated by the black markers. Press Calculate to update the graph.
+					</p>
+				</figure>
+				<script>
+					Highcharts.setOptions({
+					  chart: {
+					    inverted: true,
+					    type: 'bullet',
+					    marginRight: 118,
+					    
+					  },
+					  title: {
+					    text: null
+					  },
+					  legend: {
+					    enabled: false
+					  },
+					  yAxis: {
+					    gridLineWidth: 0
+					  },
+					  plotOptions: {
+					  
+					   bullet: {
+					            dataLabels: {
+					                enabled: true,
+					                inside: true,
+					                color: '#005863',
+					                align: 'center',
+					                //x: -30,
+					                
+					                borderRadius: 3,
+					                backgroundColor: 'rgba(255, 255, 255, 1.0)',
+					                borderWidth: 0,
+					                borderColor: '#00899b',
+					                //y: -30
+					            }
+					        },
+					    series: {
+					      pointPadding: 0,
+					      //borderWidth: 2,
+					      color: '#00899b',
+					      //borderColor: '#000',
+					      
+					      targetOptions: {
+					        width: '150%',
+					        color: '#000'
+					      }
+					    }
+					  },
+					  credits: {
+					    enabled: false
+					  },
+					  exporting: {
+					    enabled: false
+					  }
+					});
+					
+					
+					Highcharts.chart('container1', {
+					  chart: {
+					    marginTop: 0,
+					    marginBottom: 0,
+					    marginLeft: 0,
+					    height: '60px',
+					    //backgroundColor: 'rgba(250, 250, 250, 1.0)',
+					  },
+					  title: {
+					    text: 'Atmosphere Graph',
+					    style: { fontSize: '0px' }
+					  },
+					  xAxis: {
+					    categories: ['<span class="hc-cat-title">Atmosphere</span>'],
+					    opposite: true,
+					
+					  },
+					  yAxis: {
+							//softMax: 170,
+						max: 170,
+					    title: null,
+					        labels: {
+					            enabled: false
+					        },
+					    plotBands: [{
+					      from: 0,
+					      to: 159.5,
+					      color: '#a3d7d8',
+					      //borderColor:'#f5f5f5',
+					      //borderWidth:"8"
+					      className: 'plotBands-transform'
+					    }],
+					
+					  },
+					  series: [{
+					    data: [{
+					      y: 159.5,
+					      target: 159.5
+					    }]
+					  }],
+					  tooltip: {
+					    backgroundColor: '#FFF',
+					    pointFormat: '<b>{point.y}</b> (default {point.target})'
+					  }
+					});
+					
+					Highcharts.chart('container2', {
+					chart: {
+					    marginTop: 0,
+					    marginBottom: 0,
+					    marginLeft: 0,
+					    height: '60px'
+					  },
+					  title: {
+					    text: 'Alveoli Graph',
+					    style: { fontSize: '0px' }
+					  },
+					  xAxis: {
+					    categories: ['<span class="hc-cat-title">Alveoli</span>'],
+					    opposite: true
+					  },
+					  yAxis: {
+							//softMax: 170,
+						max: 170,
+					    title: null,
+					            labels: {
+					            enabled: false
+					        },
+					    plotBands: [{
+					      from: 0,
+					      to: 122.7,
+					      color: '#a3d7d8',
+					      className: 'plotBands-transform'
+					    }],
+					  },
+					  series: [{
+					    data: [{
+					      y: 122.7,
+					      target: 122.7
+					    }]
+					  }],
+					  tooltip: {
+					    backgroundColor: '#FFF',
+					    pointFormat: '<b>{point.y}</b> (default {point.target})'
+					  }
+					});
+					
+					Highcharts.chart('container3', {
+					chart: {
+					    marginTop: 0,
+					    marginBottom: 0,
+					    marginLeft: 0,
+					    height: '60px'
+					  },
+					  title: {
+					    text: 'Systemic arteries Graph',
+					    style: { fontSize: '0px' }
+					  },
+					  xAxis: {
+					    categories: ['<span class="hc-cat-title">Systemic arteries</span>'],
+					    opposite: true
+					  },
+					  yAxis: {
+							//softMax: 170,
+						max: 170,
+					    title: null,
+					            labels: {
+					            enabled: false
+					        },
+					    plotBands: [{
+					      from: 0,
+					      to: 100.3,
+					      color: '#a3d7d8',
+					      className: 'plotBands-transform'
+					    }],
+					  },
+					  series: [{
+					    data: [{
+					      y: 100.3,
+					      target: 100.3
+					    }]
+					  }],
+					  tooltip: {
+					    backgroundColor: '#FFF',
+					    pointFormat: '<b>{point.y}</b> (default {point.target})'
+					  }
+					});
+					
+					Highcharts.chart('container4', {
+					chart: {
+					    marginTop: 0,
+					    marginBottom: 0,
+					    marginLeft: 0,
+					    height: '60px'
+					  },
+					  title: {
+					    text: 'Tissues Graph',
+					    style: { fontSize: '0px' }
+					  },
+					  xAxis: {
+					    categories: ['<span class="hc-cat-title">Tissues</span>'],
+					    opposite: true
+					  },
+					  yAxis: {
+						//softMax: 170,
+						max: 170,
+					    title: null,
+					            labels: {
+					            enabled: false
+					        },
+					    plotBands: [{
+					      from: 0,
+					      to: 45.5,
+					      color: '#a3d7d8',
+					      className: 'plotBands-transform'
+					    }],
+					  },
+					  series: [{
+					    data: [{
+					      y: 45.5,
+					      target: 45.5
+					    }]
+					  }],
+					  tooltip: {
+					    backgroundColor: '#FFF',
+					    pointFormat: '<b>{point.y}</b> (default {point.target})'
+					  }
+					});
+					
+					Highcharts.chart('container5', {
+					chart: {
+					    marginTop: 0,
+					    marginLeft: 0,
+					    height: '114px'
+					  },
+					  title: {
+					    text: 'Systemic veins Graph',
+					    style: { fontSize: '0px' }
+					  },
+					  xAxis: {
+					    categories: ['<span class="hc-cat-title">Systemic veins</span>'],
+					    opposite: true
+					  },
+					  yAxis: {
+							//softMax: 170,
+						max: 170,
+					    title: {
+					      text: 'PO&#8322; (mmHg)'
+					        },
+						plotBands: [{
+					      from: 0,
+					      to: 46.3,
+					      color: '#a3d7d8',
+					      className: 'plotBands-transform'
+					    }],
+					  },
+					  series: [{
+					    data: [{
+					      y: 46.3,
+					      target: 46.3
+					    }]
+					  }],
+					  tooltip: {
+					    backgroundColor: '#FFF',
+					    pointFormat: '<b>{point.y}</b> (default {point.target})'
+					  }
+					});
+								
+				</script>
+<!--img src="images/highcharts-holder.png" class="img-fluid" alt="Short description"-->
+			</div>
+		</div>
+
+	</div>
+</div>
+</main> 
+<!-- footer modal window  -->
+<div class="modal" id="footerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+<!--div class="modal" id="footerModal" tabindex="-1" role="dialog"-->
+	<div class="modal-dialog modal-dialog-centered modal-xl mx-md-auto mx-1 px-1 mx-md-3 px-md-3" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title">
+				</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+			</div>
+			<div class="footer-modal-body">
+				... remote content from "data-remote" loads here ... 
+			</div>
+<!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> -->
+		</div>
+	</div>
+</div>
+<footer class="footer mt-auto" role="contentinfo">
+	<div class="footer-item">
+		<a id="aboutLink" href="about.html" class="footer-modal-link" data-bs-toggle="modal" pagetitle="About" data-bs-target="#footerModal" aria-label="Open the About modal">About</a> <a href="educator-resources.html" class="footer-modal-link" data-bs-toggle="modal" pagetitle="Educator Resources" data-bs-target="#footerModal" aria-label="Open the Educator Resources modal">Educator&nbsp;Resources</a> <a href="help.html" class="footer-modal-link" data-bs-toggle="modal" pagetitle="Help" data-bs-target="#footerModal" aria-label="Open the Help modal">Help</a> 
+	</div>
+	<div class="footer-logo">
+		<a href="https://www.biointeractive.org" target="_blank" aria-label="Open the HHMI BioInteractive website in another window"><img src="images/HHMI_BioInteractive_white.svg" class="img-fluid" alt="HHMI BioInteractive Logo"></a> 
+	</div>
+</footer>
+<script>
+	// FOR MODALS
+	$('a.modal-link').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		var pageTitle = $(this).attr('pageTitle');
+		$(".modal .modal-title").html(pageTitle);
+		$(".modal-body").html('<iframe title="Modal Body" tabindex="0" width="100%" style="display:block;" frameborder="0" onload="iframe_height()" scrolling="no" id="frame-modal" allowtransparency="true" src="' +url + '"></iframe>');
+	});
+	function iframe_height() {
+		var iframehght = $("#frame-modal").contents().height();
+		$("#frame-modal").height(iframehght);
+	}
+	
+	// FOR FOOTER MODALS
+	$('a.footer-modal-link').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		var pageTitle = $(this).attr('pageTitle');
+		$(".modal .modal-title").html(pageTitle);
+		$(".footer-modal-body").html('<iframe title="Modal Body" tabindex="0" width="100%" style="display:block;" frameborder="0" onload="iframe_height_footer()" scrolling="no" id="frame-footer-modal" allowtransparency="true" src="' +url + '"></iframe>');
+	});
+	function iframe_height_footer() {
+		var iframehght = $("#frame-footer-modal").contents().height();
+		$("#frame-footer-modal").height(iframehght);
+	}
+	
+	//function resizeIframe(obj) {
+	//obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+	//}
+</script>
+<script>
+	function myResizeFunction() {
+		//$("[data-dismiss=modal]").trigger({ type: "click" });	// THIS ALSO DISMISSES THE DROPDOWN BECAUSE IT FIRES A CLICK EVENT
+		$('#footerModal').modal('hide');			
+	}
+</script>
+<script src="js/bootstrap.bundle.min.js">
+</script>
+<script src="js/MathFuntions.js">
+</script>
+<script src="js/oxygenCalculate.js">
+</script>
+<script src="js/simulator.js">
+</script>
+<script>
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	    return new bootstrap.Tooltip(tooltipTriggerEl);
+	});
+	
+	$( document ).ready(function() {
+		//console.log( "ready!" );
+		$("#hc-linkto-highcharts-data-table-0").attr('aria-hidden', 'true');
+		$("#hc-linkto-highcharts-data-table-1").attr('aria-hidden', 'true');
+		$("#hc-linkto-highcharts-data-table-2").attr('aria-hidden', 'true');
+		$("#hc-linkto-highcharts-data-table-3").attr('aria-hidden', 'true');
+		$("#hc-linkto-highcharts-data-table-4").attr('aria-hidden', 'true');
+		
+		$("#hc-linkto-highcharts-data-table-0").hide;
+		$("#hc-linkto-highcharts-data-table-1").hide;
+		$("#hc-linkto-highcharts-data-table-2").hide;
+		$("#hc-linkto-highcharts-data-table-3").hide;
+		$("#hc-linkto-highcharts-data-table-4").hide;
+	
+	});
+	
+	
+</script>
+</body>
+</html>
