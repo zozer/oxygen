@@ -117,7 +117,7 @@ function brentq(f, xa, xb, func_data_param, {iter=_iter, rtol=_rtol, xtol=_xtol}
             xcur += (sbis > 0 ? delta : -delta);
         }
 
-        fcur = f(xcur, func_data_param);
+        fcur = f(xcur, ...func_data_param);
     }
     Error("Failed to converge within the iteraction count");
     return xcur;
@@ -178,6 +178,181 @@ function newton(func, x0, args=[], {tol=1.48e-8, maxiter=50, rtol=0.0, disp=true
 
     return p
 }
+
+// Multiply steps computed from asymptotic behaviour of errors by this.
+const SAFETY = 0.9
+
+const MIN_FACTOR = 0.2  // Minimum allowed decrease in a step size.
+const MAX_FACTOR = 10   // Maximum allowed increase in a step size.
+function rk_step(fun, t, y, h, A, B, C, order) {
+/*    """Perform a single Runge-Kutta step.
+
+    This function computes a prediction of an explicit Runge-Kutta method and
+    also estimates the error of a less accurate method.
+
+    Notation for Butcher tableau is as in [1]_.
+
+    Parameters
+    ----------
+    fun : callable
+        Right-hand side of the system.
+    t : float
+        Current time.
+    y : ndarray, shape (n,)
+        Current state.
+    f : ndarray, shape (n,)
+        Current value of the derivative, i.e., ``fun(x, y)``.
+    h : float
+        Step to use.
+    A : ndarray, shape (n_stages, n_stages)
+        Coefficients for combining previous RK stages to compute the next
+        stage. For explicit methods the coefficients at and above the main
+        diagonal are zeros.
+    B : ndarray, shape (n_stages,)
+        Coefficients for combining RK stages for computing the final
+        prediction.
+    C : ndarray, shape (n_stages,)
+        Coefficients for incrementing time for consecutive RK stages.
+        The value for the first stage is always zero.
+    K : ndarray, shape (n_stages + 1, n)
+        Storage array for putting RK stages here. Stages are stored in rows.
+        The last row is a linear combination of the previous rows with
+        coefficients
+
+    Returns
+    -------
+    y_new : ndarray, shape (n,)
+        Solution at t + h computed with a higher accuracy.
+    f_new : ndarray, shape (n,)
+        Derivative ``fun(t + h, y_new)``.
+
+    References
+    ----------
+    .. [1] E. Hairer, S. P. Norsett G. Wanner, "Solving Ordinary Differential
+           Equations I: Nonstiff Problems", Sec. II.4.
+    """*/
+    var K = [];
+    K[0] = fun(y,t);
+    var y_new = y;
+    for (var i = 1; i < order; i++) {
+        var dt = t + C[i] * h;
+        var dy = Array(y.length).fill(0);
+        for (var yi = 0; yi < y.length; yi++) {
+            for (var j = 0; j < i; j++) {
+                dy[yi] += A[i][j]*K[j][yi];
+            }
+            dy[yi]=dy[yi] * h + y[yi];
+        }
+        K[i] = fun(dy,dt);
+        for (var yi = 0; yi < y.length; yi++) {
+            y_new[yi] += B[i] * K[i][yi] * h;
+        }
+    }
+    return y_new;
+}
+
+function _estimate_error_norm(K, E, h, scale){
+    return norm(np.dot(K.T, E) * h / scale)
+}
+
+/*==================solve_ivp===========================*/
+//Explicit Runge-Kutta method of order 3(2)
+function solve_ivp(func,y0,t_span,args=[],rtol=1e-3, atol=1e-6,max_step=Infinity) {
+
+    //order 3(2) settings
+    var order = 3;
+    var error_exponent  = -1/3;
+    var n_stages = 3;
+    var C = [0, 1/2, 3/4];
+    var A = [
+        [0, 0, 0],
+        [1/2, 0, 0],
+        [0, 3/4, 0]
+    ];
+    var B = [2/9, 1/3, 4/9];
+    var E = [5/72, -1/12, -1/9, 1/8];
+    var P = [[1, -4 / 3, 5 / 9],
+                  [0, 1, -2/3],
+                  [0, 4/3, -8/9],
+                  [0, -1, 1]];
+
+    //processing
+    var t0=t_span[0];
+    var t_bound=t_span[1];
+    var direction = t0==t_bound ? 1 : Math.sign(t_bound-t0);
+    var h_abs;
+
+    var fun = function(y,t){return func(y,t,...args)};
+    var t = t0;
+    var y = y0;
+    while (t < t_bound) {
+        var y_new = rk_step(fun, t, y, 0.000155, A, B, C, order)
+        y = y_new;
+        t += 0.000155;
+    }
+    return y_new;
+    var y = y0;
+    //while (direction * (t - t_bound) >= 0) {
+        t = t
+        y = y
+
+        var min_step = 10*Number.EPSILON;
+
+        h_abs = Math.max(Math.min(h_abs, max_step), min_step)
+
+        var step_accepted = false
+        var step_rejected = false
+
+        while (!step_accepted) {
+            if (h_abs < min_step) {
+                return false;
+            }
+
+            var h = h_abs * direction
+            var t_new = t + h
+
+            if (direction * (t_new - t_bound) > 0) {
+                t_new = t_bound
+            }
+
+            h = t_new - t
+            h_abs = Math.abs(h)
+
+            var y_new = rk_step(fun, t, y, 0.000155, A, B, C, order)
+            var scale = atol + Math.max(Math.abs(y), Math.abs(y_new)) * rtol
+            var error_norm = .1;//_estimate_error_norm(K, h, scale)
+            var factor = 1
+            if (error_norm < 1) {
+                if (error_norm == 0) {
+                    factor = MAX_FACTOR
+                }
+                else {
+                    factor = Math.min(MAX_FACTOR,
+                                SAFETY * error_norm ** error_exponent)
+                }
+
+                if (step_rejected) {
+                    factor = Math.min(1, factor)
+                }
+
+                h_abs *= factor
+
+                step_accepted = true
+            }
+            else {
+                h_abs *= Math.max(MIN_FACTOR,
+                            SAFETY * error_norm ** error_exponent)
+                step_rejected = true
+            }
+        }
+
+        t = t_new
+        y = y_new
+    //}
+    return y_new;
+}
+
+
 
 /*===================fsolve==============================
 function fsolve(func, x0, args=(), full_output=0,

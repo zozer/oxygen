@@ -780,7 +780,7 @@ function submitForm(mode){
 	systemicarteries = (results["PaO2"]*7.50062).toFixed(1)	
 	tissues = (results["PtO2"]*7.50062).toFixed(1)
 	systemicveins = (results["PvO2"]*7.50062).toFixed(1)
-	oxygensaturations = (results["SaO2"]*100).toFixed(1)
+	oxygensaturations = results["SaO2"]
 	
 	if (RR <= .01) {
 		oxygensaturations = 0

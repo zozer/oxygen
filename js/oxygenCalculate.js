@@ -460,7 +460,7 @@ function populatealvgaseqn(variables, constants) {
     AGE['PcCO2'] = AGE['PACO2'] // assumes complete equilibrium
     AGE['PAO2'] = constants.PIO2 - ((AGE['PACO2']*(1-variables.fio2*(1-variables.RQ)))*variables.RQ**-1)// Alveolar gas Equation
     AGE['PcO2'] = AGE['PAO2'] // assumes complete equilibrium
-    AGE['pH'] = acidbase_1(variables.BE,AGE['PcCO2'],AGE['PcO2'])
+    AGE['pH'] = acidbase_1(variables.BE,AGE['PcCO2'],AGE['PcO2'], variables.DPG, variables.Temp, variables.Hb)
     AGE['CcCO2'] = CnCO2_1(AGE['pH'], AGE['PcCO2'], AGE['PcO2'], variables.DPG, variables.Temp)
     AGE['CcO2'] = CnO2_1(AGE['PcO2'], AGE['pH'], AGE['PcCO2'], variables.DPG, variables.Temp)
     AGE['CvO2'] = AGE['CcO2'] - 100*(variables.VO2*(variables.CO*(1-variables.pulm_shunt))**-1) 
@@ -609,13 +609,18 @@ function runorgan(dtype, preorganCnO2, preorganCnCO2, variables, heter_stat=1e-2
         var membranediffusion = variables.DmO2
         var organtime = Vorganblood/Qorganblood // in minutes
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        var [postorganCnO2,postorganCnCO2] = [20,45]
+        //var [postorganCnO2,postorganCnCO2] = [20,45]
         /*var [postorganCnO2,postorganCnCO2] = integrate.odeint(dxdt_organ,
                 [preorganCnO2,preorganCnCO2],[0,organtime],
                 (membranediffusion, Vorganblood, preorganCnO2, preorganCnCO2, Qorganblood,
                 organgas, organflow, organO2inputcontent, organCO2inputcontent, variables),
                 rtol=toleranceoferror_organ, mxstep=1000000)[1]*/
+        var x = solve_ivp(dxdt_organ,[preorganCnO2,preorganCnCO2],[0,organtime],
+            [membranediffusion, Vorganblood, preorganCnO2, preorganCnCO2, Qorganblood, organgas, organflow, organO2inputcontent, organCO2inputcontent, variables],
+            toleranceoferror_organ)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        var postorganCnO2 = x[0]
+        var postorganCnCO2 = x[1]
         // and get the organ values too {
         var CdoO2 = (organflow*organO2inputcontent - Qorganblood*(postorganCnO2-preorganCnO2))/organflow         // FICK within organ
         var CdoCO2 = (organflow*organCO2inputcontent - Qorganblood*(postorganCnCO2-preorganCnCO2))/organflow
@@ -646,6 +651,18 @@ function updatebloodgascontents(variables) {
     // Pulmonary capillaries & Veins
     //-------------------------------------------------------------------------------
     //TEMPORARY UNTIL INTEGRATION WORKS
+    
+    organVars['CvCO2']=24.128544212222064
+    organVars['CcO2']=20.988826785103143
+    organVars['CcCO2']=20.988826785103143
+    organVars['CaCO2']=21.051621133645522
+    organVars['CaO2']=20.910333849501093
+    organVars['CtO2']=16.861750853549676
+    organVars['CtCO2']=24.290487530406654
+
+    organVars['CvO2'] = 17.06418000500071
+    organVars['CvCO2'] = 24.128544212222064
+    return;
     organVars['CvO2'] = 16.7136288222095
     organVars['CvCO2'] = 47.68584337952363
     organVars['CcO2'] = 20.638275604163468
@@ -890,6 +907,7 @@ var AGE = {}
 function calculate(data) {
     var variables = getinputs(data)
     calculatedconstants(variables)
+    organVars['trueVO2'] = Constants.trueVO2
     AGE = populatealvgaseqn(variables, Constants)
     updatebloodgascontents(variables)
     updatepartialpressures(variables)
