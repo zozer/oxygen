@@ -339,8 +339,7 @@ function SnO2_2(CnO2_local, P50_SnO2) {
 //----------------------------------------------------------------------------
 function CnO2_1(PnO2, pH, PnCO2, DPG, Temp) {
     /*Calculate O2 CONTENT from PARTIAL PRESSURE*/
-    return (Constants.Wbl*P50(pH,PnCO2,DPG,Temp)*(SnO2_1(PnO2,pH,PnCO2,DPG,Temp)*(1
-    -SnO2_1(PnO2,pH,PnCO2,DPG,Temp))**-1)**((1+n0)**-1)*Constants.alphaO2
+    return (Constants.Wbl*PnO2*Constants.alphaO2
     +4*Constants.HbMol*SnO2_1(PnO2,pH,PnCO2,DPG,Temp))*(R*STP_T*STP_P**-1*1e2)
     // ml of O2 per 100ml blood STP
 }
@@ -634,15 +633,17 @@ function runorgan(dtype, preorganCnO2, preorganCnCO2, variables, heter_stat=1e-2
 //-------------------------------------------------------------------------------
 //           mass balance
 //-------------------------------------------------------------------------------
-/*function lung_null(content, variables) {
+function lung_null(CvO2,CvCO2, variables) {
     Constants.VQ = Constants.VA*(variables.CO*(1-variables.pulm_shunt))**-1;
-    [content['CcO2'],content['CcCO2']] = 
-    integrate.odeint(dxdt,[content['CvO2'],content['CvCO2']],[0,variables.Vc*(variables.CO*(1-variables.pulm_shunt))**-1],
-    (Constants.VQ,variables.DmO2,variables.Vc,content['CvO2'],content['CvCO2'], variables),rtol=toleranceoferror_lung)[1]
-    var out = [content['CcO2'] - content['CvO2'] - 100*((organVars.trueVO2)*(variables.CO*(1-variables.pulm_shunt))**-1)]
-    out.push(content['CvCO2'] - content['CcCO2'] - 100*((variables.RQ*organVars.trueVO2)*(variables.CO*(1-variables.pulm_shunt))**-1))
-    return out
-}*/
+    var x = 
+    solve_ivp(dxdt,[CvO2,CvCO2],[0,variables.Vc*(variables.CO*(1-variables.pulm_shunt))**-1],
+    [Constants.VQ,variables.DmO2,variables.Vc,CvO2,CvCO2, variables],toleranceoferror_lung)
+    organVars['CcO2'] = x[0]
+    organVars['CcCO2'] = x[1]
+    var out1 = organVars['CcO2'] - CvO2 - 100*((organVars.trueVO2)*(variables.CO*(1-variables.pulm_shunt))**-1)
+    var out2 = CvCO2 - organVars['CcCO2'] - 100*((variables.RQ*organVars.trueVO2)*(variables.CO*(1-variables.pulm_shunt))**-1)
+    return (out1+out2)/2
+}
 //-------------------------------------------------------------------------------
 //         compartment contents
 //-------------------------------------------------------------------------------
@@ -650,27 +651,12 @@ function updatebloodgascontents(variables) {
     //-------------------------------------------------------------------------------
     // Pulmonary capillaries & Veins
     //-------------------------------------------------------------------------------
-    //TEMPORARY UNTIL INTEGRATION WORKS
-    
-    organVars['CvCO2']=24.128544212222064
-    organVars['CcO2']=20.988826785103143
-    organVars['CcCO2']=20.988826785103143
-    organVars['CaCO2']=21.051621133645522
-    organVars['CaO2']=20.910333849501093
-    organVars['CtO2']=16.861750853549676
-    organVars['CtCO2']=24.290487530406654
-
-    organVars['CvO2'] = 17.06418000500071
-    organVars['CvCO2'] = 24.128544212222064
-    return;
-    organVars['CvO2'] = 16.7136288222095
-    organVars['CvCO2'] = 47.68584337952363
-    organVars['CcO2'] = 20.638275604163468
-    organVars['CcCO2'] = 44.54612595409117
-
-    organVars['CvO2'] = AGE['CvO2']
-    organVars['CvCO2'] = AGE['CvCO2']
-    //optimize.fsolve(lung_null, (organVars, variables), xtol=0.001) does nothing??
+    organVars['CvO2']= AGE['CvO2']
+    var x=newton(lung_null, AGE['CvO2'], [AGE['CvCO2'], variables], {tol:0.001})
+    organVars['CvO2'] = x
+    //organVars['CvCO2'] = AGE['CvCO2']
+    //organVars['CcO2'] = AGE['CcO2']
+    //organVars['CcCO2'] = AGE['CcCO2']
     //-------------------------------------------------------------------------------
     // Arteries
     //-------------------------------------------------------------------------------

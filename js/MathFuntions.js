@@ -251,10 +251,6 @@ function rk_step(fun, t, y, h, A, B, C, order) {
     return y_new;
 }
 
-function _estimate_error_norm(K, E, h, scale){
-    return norm(np.dot(K.T, E) * h / scale)
-}
-
 /*==================solve_ivp===========================*/
 //Explicit Runge-Kutta method of order 3(2)
 function solve_ivp(func,y0,t_span,args=[],rtol=1e-3, atol=1e-6,max_step=Infinity) {
